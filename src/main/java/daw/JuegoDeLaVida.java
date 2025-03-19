@@ -1,16 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package daw;
 
 /**
  *
- * @author christian
+ * @author christian y salva
  */
 public class JuegoDeLaVida {
 
     public static void main(String[] args) {
-        System.out.println("aaaaaaaaaaaaa");
+        System.out.println("segunda pruba a ver si esto funciona de una p*** vez");
     }
 }
