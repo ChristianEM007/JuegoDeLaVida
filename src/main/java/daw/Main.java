@@ -23,7 +23,7 @@ public class Main {
                       """;
         boolean salida = true;
         int opcion = 0;
-
+// MENU PRINCIPAL --------------------------------------------------------------
         do {
             System.out.println(menu);
 
@@ -41,14 +41,64 @@ public class Main {
             }
         } while (salida);
 
+        Juego generacionAc;
+                
         switch (opcion) {
+
             case 1 -> {
-                System.out.println("Estamos en mantenimiento vuelva pronto");
+// NUEVA PARTIDA ---------------------------------------------------------------
+                System.out.println("Has elegido 'Nueva partida'. COMENZANDO...");
+                int tamaño = 0;
+                int porcentaje = 0;
+                salida = true;
+    // TAMAÑO DEL TABLERO
+                do {
+                    //comprobamos que el usuario no la lie
+                    System.out.println("Elige el tamaño del tablero (max 25):");
+                    try {
+                        tamaño = sc.nextInt();
+
+                        if (tamaño < 26) {
+                            salida = false;
+                        } else {
+                            System.out.println("Intentalo de nuevo tontito ya te dije que maximo 25");
+                        }
+                    } catch (InputMismatchException ime) {
+                        System.out.println("Intentalo de nuevo tontito");
+                        sc.nextLine();
+                    }
+                } while (salida);
+                
+                generacionAc = new Juego(tamaño);
+    // PORCENTAJE DE CELULAS VIVAS 
+                salida = true;
+                //comprobamos que el usuario no la lie
+                do {
+                    System.out.println("Ahora elija el porcentaje de celulas vivas:");
+                    try {
+                        porcentaje = sc.nextInt();
+
+                        if (porcentaje < 101) {
+                            salida = false;
+                        } else {
+                            System.out.println("Intentalo de nuevo tontito ya te dije que maximo 25");
+                        }
+                    } catch (InputMismatchException ime) {
+                        System.out.println("Intentalo de nuevo tontito");
+                        sc.nextLine();
+                    }
+                } while (salida);
+                
+                int numVivas = (tamaño*porcentaje)/100;
+                generacionAc.inicioPartida(numVivas);//************************************************************************en proceso
             }
             case 2 -> {
+// CARGAR PARTIDA --------------------------------------------------------------
+
                 System.out.println("Estamos en mantenimiento vuelva en un siglo");
             }
             case 3 -> {
+// SALIR DEL JUEGO -------------------------------------------------------------
                 System.out.println("Saliendo.......");
                 System.exit(0); // termina programa
             }
@@ -57,7 +107,7 @@ public class Main {
             }
         }
 
-        // loop jugable
+// LOOP JUGABLE ----------------------------------------------------------------
         boolean salidaJuego = false;
         do {
             String menu2 = """
@@ -74,6 +124,7 @@ public class Main {
             opcion = 0;
             sc.nextLine(); //limpiamos scanner
             do {
+// MENU 2 ----------------------------------------------------------------------
                 System.out.println(menu2);
 
                 try {
@@ -91,9 +142,12 @@ public class Main {
             } while (salida);
 
             if (opcion == 1) {
-
+// SIGUIENTE GENERACION --------------------------------------------------------
+                
+                
+                
             } else {
-
+// MENU 3 (GUARDAR PARTIDA)-----------------------------------------------------
                 String menu3 = """
                        -------------------------------------------------
                        |               Juego de la vida                |
@@ -123,11 +177,12 @@ public class Main {
                         sc.nextLine();
                     }
                 } while (salida);
-                
-                if(opcion == 1){
-                    //guardar partida ---------------------------------------------------
+
+                if (opcion == 1) {
+// GUARDAR PARTIDA -------------------------------------------------------------
+                    System.out.println("mantenimiento");
                 }
-                
+
                 System.out.println("Gracias por jugar");
                 salidaJuego = true;
             }

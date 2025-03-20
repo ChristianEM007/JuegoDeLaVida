@@ -13,6 +13,10 @@ public class Juego {
         this.tablero = new Celula[tamano][tamano];
     }
     
+    public void inicioPartida(int numVivas){
+        
+    }
+    
     public void matarCelula(int fila, int columna){
         tablero[fila][columna].muerte();
     }
