@@ -43,8 +43,10 @@ public class Main {
 
         switch (opcion) {
             case 1 -> {
+                System.out.println("Estamos en mantenimiento vuelva pronto");
             }
             case 2 -> {
+                System.out.println("Estamos en mantenimiento vuelva en un siglo");
             }
             case 3 -> {
                 System.out.println("Saliendo.......");
@@ -54,5 +56,83 @@ public class Main {
                 System.out.println("esto no deberia salir...");
             }
         }
+
+        // loop jugable
+        boolean salidaJuego = false;
+        do {
+            String menu2 = """
+                       -------------------------------------------------
+                       |               Juego de la vida                |
+                       |               Elija la opcion:                |
+                       |                                               |  
+                       |            1.- Siguiente generacion           |
+                       |            2.- Terminar partida               |
+                       |                                               |
+                       -------------------------------------------------
+                      """;
+            salida = true;  // reutilizamos salida
+            opcion = 0;
+            sc.nextLine(); //limpiamos scanner
+            do {
+                System.out.println(menu2);
+
+                try {
+                    opcion = sc.nextInt();
+
+                    if (opcion > 0 && opcion < 3) {
+                        salida = false;
+                    } else {
+                        System.out.println("Intentalo de nuevo tontito");
+                    }
+                } catch (InputMismatchException ime) {
+                    System.out.println("Intentalo de nuevo tontito");
+                    sc.nextLine();
+                }
+            } while (salida);
+
+            if (opcion == 1) {
+
+            } else {
+
+                String menu3 = """
+                       -------------------------------------------------
+                       |               Juego de la vida                |
+                       |               ¿Guardar Partida?               |
+                       |                                               |  
+                       |                    1.- Si                     |
+                       |                    2.- No                     |
+                       |                                               |
+                       -------------------------------------------------
+                      """;
+                salida = true;  // reutilizamos salida
+                opcion = 0;
+                sc.nextLine(); //limpiamos scanner
+                do {
+                    System.out.println(menu3);
+
+                    try {
+                        opcion = sc.nextInt();
+
+                        if (opcion > 0 && opcion < 3) {
+                            salida = false;
+                        } else {
+                            System.out.println("Intentalo de nuevo tontito");
+                        }
+                    } catch (InputMismatchException ime) {
+                        System.out.println("Intentalo de nuevo tontito");
+                        sc.nextLine();
+                    }
+                } while (salida);
+                
+                if(opcion == 1){
+                    //guardar partida ---------------------------------------------------
+                }
+                
+                System.out.println("Gracias por jugar");
+                salidaJuego = true;
+            }
+
+        } while (!salidaJuego);
+
     }
 }
