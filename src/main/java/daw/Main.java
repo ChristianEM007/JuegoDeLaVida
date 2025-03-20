@@ -13,7 +13,7 @@ public class Main {
         // MENU PRINCIPAL ------------------------------------------------------
         int opcion = menu();
 
-        Juego generacionAc;
+        Juego generacionAct = new Juego(0);
 
         switch (opcion) {
             // NUEVA PARTIDA ---------------------------------------------------
@@ -23,14 +23,14 @@ public class Main {
                 int tamaño = pregTamanio();
 
                 // INICIALIZAMOS EL TABLERO
-                generacionAc = new Juego(tamaño);
+                generacionAct = new Juego(tamaño);
 
                 // PORCENTAJE DE CELULAS VIVAS 
                 int porcentaje = pregPorcentaje();
-                int numVivas = (tamaño * porcentaje) / 100;
-
+                int numVivas = (tamaño * tamaño * porcentaje) / 100;
+                
                 // INICIALIZAR LAS CELULAS VIVAS
-                generacionAc.inicioPartida(numVivas);//************************************************************************en proceso
+                generacionAct.inicioPartida(numVivas);
             }
             case 2 -> {
                 // CARGAR PARTIDA ----------------------------------------------
@@ -49,13 +49,19 @@ public class Main {
 
         // LOOP JUGABLE --------------------------------------------------------
         boolean salidaJuego = false;
+        System.out.println(generacionAct.toString());
         do {
             // MENU 2 ------------------------------------------------------------------
             opcion = menu2();
 
             if (opcion == 1) {
                 // SIGUIENTE GENERACION --------------------------------------------------------
-
+                Juego generacionAnterior = new Juego(generacionAct.copiarTablero());
+                generacionAct.recorrerTablero();
+                System.out.println("Generación anterior ------------------------");
+                System.out.println(generacionAnterior.toString());
+                System.out.println("Generación actual ------------------------");
+                System.out.println(generacionAnterior.toString());
             } else {
                 // MENU 3 (GUARDAR PARTIDA)-----------------------------------------------------
                 opcion = menu3();

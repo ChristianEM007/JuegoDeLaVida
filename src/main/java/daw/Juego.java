@@ -1,55 +1,80 @@
-
 package daw;
+
+import java.util.Random;
 
 /**
  *
- * @author salvador
+ * @author christian y salva
  */
 public class Juego {
-    
-    private Celula[][] tablero;
-    
+
+    private final Celula[][] tablero;
+
     public Juego(int tamano) {
         this.tablero = new Celula[tamano][tamano];
+
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[0].length; j++) {
+                this.tablero[i][j] = new Celula();
+            }
+        }
     }
     
-    public void inicioPartida(int numVivas){
-        
+    public Juego(Celula[][] tableroNuevo){
+        this.tablero = tableroNuevo;
     }
-    
-    public void matarCelula(int fila, int columna){
+
+    public void inicioPartida(int numVivas) {
+        Random rand = new Random();
+        while (numVivas > 0) {
+            int fila = rand.nextInt(0, tablero.length);
+            int columna = rand.nextInt(0, tablero.length);
+            if (!(tablero[fila][columna].isViva())) {
+                tablero[fila][columna].vida();
+                numVivas--;
+            }
+        }
+    }
+
+    public Celula[][] copiarTablero() {//********************************no funciona***********
+        Celula[][] copia = new Celula[tablero.length][tablero.length];
+        for (int i = 0; i < tablero.length; i++) {
+            System.arraycopy(tablero[i], 0, copia[i], 0, tablero[i].length);
+        }
+        return copia;
+    }
+
+    public void matarCelula(int fila, int columna) {
         tablero[fila][columna].muerte();
     }
-    
-    public void revivirCelula(int fila, int columna){
+
+    public void revivirCelula(int fila, int columna) {
         tablero[fila][columna].vida();
     }
-    
-    public void recorrerTablero(){
-        for (int i = 0; i <= tablero.length; i++) {
-            for (int j = 0; j <= tablero[0].length; j++) {
-                if(tablero[i][j].isViva()){
-                    if(mementoMori(i, j)){
+
+    public void recorrerTablero() {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[0].length; j++) {
+                if (tablero[i][j].isViva()) {
+                    if (mementoMori(i, j)) {
                         tablero[i][j].muerte();
                     }
-                }else{
-                    if(comprobarRevivicion(i, j)){
+                } else {
+                    if (comprobarRevivicion(i, j)) {
                         tablero[i][j].vida();
                     }
                 }
             }
         }
     }
-    
-    public int comprobarVecinas(int fila, int columna){
-        
+
+    public int comprobarVecinas(int fila, int columna) {
         int cantidad = 0;
-        
-        for (int i = fila-1; i <= fila + 1; i++) {
-            for (int j = columna-1; j <= columna + 1; j++) {
-                
-                if(fila != i && columna != j){
-                    if(tablero[i][j].isViva()){
+
+        for (int i = fila - 1; i <= fila + 1; i++) {
+            for (int j = columna - 1; j <= columna + 1; j++) {
+                if ((fila != i && columna != j) && casillaValida(i, j)) {
+                    if (tablero[i][j].isViva()) {
                         cantidad++;
                     }
                 }
@@ -58,31 +83,31 @@ public class Juego {
         return cantidad;
     }
     
-    public boolean comprobarRevivicion(int fila, int columna){
-        
+    public boolean casillaValida(int fila, int columna){
+        return 0<fila&&fila<tablero.length&&0<columna&&columna<tablero.length;
+    }
+
+    public boolean comprobarRevivicion(int fila, int columna) {
         int vecinas = comprobarVecinas(fila, columna);
-        
         return vecinas == 3;
     }
-    
-    public boolean mementoMori(int fila, int columna){
-        
+
+    public boolean mementoMori(int fila, int columna) {
         boolean morir = true;
         int vecinas = comprobarVecinas(fila, columna);
-        
-        if(vecinas <= 1 ){
+
+        if (vecinas <= 1) {
             return morir;
-        }else if(vecinas > 3){
+        } else if (vecinas > 3) {
             return morir;
         }
-        
         return false;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        
+
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[0].length; j++) {
                 sb.append(tablero[i][j].toString()).append(" ");
@@ -91,6 +116,5 @@ public class Juego {
         }
         return sb.toString();
     }
-    
-    
+
 }

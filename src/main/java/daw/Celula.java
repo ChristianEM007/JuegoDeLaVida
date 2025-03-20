@@ -3,7 +3,7 @@ package daw;
 
 /**
  *
- * @author salvador
+ * @author christian y salva
  */
 public class Celula {
     
@@ -28,10 +28,12 @@ public class Celula {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        char carViva = '\u25A0';
+        char carMuerta = '\u25A1';
         if(viva){
-            sb.append("0");
+            sb.append(carViva);
         }else{
-            sb.append("1");
+            sb.append(carMuerta);
         }
         return sb.toString();
     }
