@@ -36,14 +36,6 @@ public class Juego {
         }
     }
 
-    public Celula[][] copiarTablero() {//********************************no funciona***********
-        Celula[][] copia = new Celula[tablero.length][tablero.length];
-        for (int i = 0; i < tablero.length; i++) {
-            System.arraycopy(tablero[i], 0, copia[i], 0, tablero[i].length);
-        }
-        return copia;
-    }
-
     public void matarCelula(int fila, int columna) {
         tablero[fila][columna].muerte();
     }
@@ -52,20 +44,27 @@ public class Juego {
         tablero[fila][columna].vida();
     }
 
-    public void recorrerTablero() {
+    public Juego recorrerTablero() {
+        Celula[][] resultado = new Celula[tablero.length][tablero.length];
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[0].length; j++) {
                 if (tablero[i][j].isViva()) {
-                    if (mementoMori(i, j)) {
-                        tablero[i][j].muerte();
+                    if (mementoMori(i, j)) {//********************************arreglar***********
+                        resultado[i][j] = new Celula(false);
+                    } else {
+                        resultado[i][j] = new Celula(true);
                     }
                 } else {
                     if (comprobarRevivicion(i, j)) {
-                        tablero[i][j].vida();
+                        resultado[i][j] = new Celula(true);
+                    } else {
+                        resultado[i][j] = new Celula(false);
                     }
                 }
             }
         }
+        Juego nuevaGen = new Juego(resultado);
+        return nuevaGen;
     }
 
     public int comprobarVecinas(int fila, int columna) {

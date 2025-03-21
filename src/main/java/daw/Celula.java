@@ -12,6 +12,10 @@ public class Celula {
     public Celula() {
         this.viva = false;
     }
+    
+    public Celula(boolean estado){
+        this.viva = estado;
+    }
 
     public boolean isViva() {
         return viva;

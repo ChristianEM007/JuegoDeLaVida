@@ -28,7 +28,7 @@ public class Main {
                 // PORCENTAJE DE CELULAS VIVAS 
                 int porcentaje = pregPorcentaje();
                 int numVivas = (tamaño * tamaño * porcentaje) / 100;
-                
+
                 // INICIALIZAR LAS CELULAS VIVAS
                 generacionAct.inicioPartida(numVivas);
             }
@@ -49,6 +49,7 @@ public class Main {
 
         // LOOP JUGABLE --------------------------------------------------------
         boolean salidaJuego = false;
+        System.out.println("La primera generacion ha sido: ");
         System.out.println(generacionAct.toString());
         do {
             // MENU 2 ------------------------------------------------------------------
@@ -56,12 +57,11 @@ public class Main {
 
             if (opcion == 1) {
                 // SIGUIENTE GENERACION --------------------------------------------------------
-                Juego generacionAnterior = new Juego(generacionAct.copiarTablero());
-                generacionAct.recorrerTablero();
+                Juego generacionNueva = generacionAct.recorrerTablero();
                 System.out.println("Generación anterior ------------------------");
-                System.out.println(generacionAnterior.toString());
+                System.out.println(generacionAct.toString());
                 System.out.println("Generación actual ------------------------");
-                System.out.println(generacionAnterior.toString());
+                System.out.println(generacionNueva.toString());
             } else {
                 // MENU 3 (GUARDAR PARTIDA)-----------------------------------------------------
                 opcion = menu3();
