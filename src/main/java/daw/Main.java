@@ -1,6 +1,8 @@
 package daw;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,6 +27,20 @@ public class Main {
                 // INICIALIZAMOS EL TABLERO
                 generacionAct = new Juego(tamaño);
 
+                //opcion = menu1_5(); *******************************************Falta preguntar al usuario por coordenadas concretas de las celulas, espabila christian
+                /*
+                if(opcion==1){
+                    // PORCENTAJE DE CELULAS VIVAS 
+                    int porcentaje = pregPorcentaje();
+                    int numVivas = (tamaño * tamaño * porcentaje) / 100;
+
+                    // INICIALIZAR LAS CELULAS VIVAS
+                    generacionAct.inicioPartida(numVivas);
+                } else {
+                    String[] posiciones = pregPosiciones();
+                    generacionAct.inicioPartidaPosiciones(posiciones);
+                }
+                */
                 // PORCENTAJE DE CELULAS VIVAS 
                 int porcentaje = pregPorcentaje();
                 int numVivas = (tamaño * tamaño * porcentaje) / 100;
@@ -48,35 +64,48 @@ public class Main {
         }
 
         // LOOP JUGABLE --------------------------------------------------------
-        boolean salidaJuego = false;
-        System.out.println("La primera generacion ha sido: ");
+        System.out.println("La primera generacion es: ");
         System.out.println(generacionAct.toString());
+        boolean salidaJuego = false;
+        List<Juego> historico = new ArrayList<>();
+        historico.add(generacionAct);
         do {
-            // MENU 2 ------------------------------------------------------------------
+            // MENU 2 ----------------------------------------------------------
             opcion = menu2();
 
             if (opcion == 1) {
-                // SIGUIENTE GENERACION --------------------------------------------------------
+                // SIGUIENTE GENERACION ----------------------------------------
                 Juego generacionNueva = generacionAct.recorrerTablero();
                 System.out.println("Generación anterior ------------------------");
-                System.out.println(generacionAct.toString());
+                System.out.print(generacionAct.toString());
+                System.out.println("Numero de células vivas: " + generacionAct.comprobarVivas());
                 System.out.println("Generación actual ------------------------");
-                System.out.println(generacionNueva.toString());
+                System.out.print(generacionNueva.toString());
+                System.out.println("Numero de células vivas: " + generacionNueva.comprobarVivas());
+
+                // COMPROBAMOS LA CONDICION DE DERROTA -------------------------
+                historico.add(generacionNueva);
+                if (historico.size() == 4) {
+                    historico.remove(0);
+                    salidaJuego = condicionDerrota(historico);
+                }
+                if (salidaJuego) {
+                    System.out.println("El juego no ha avanzado en los últimos 3 turnos. Has perdido");
+                }
+                generacionAct = generacionNueva;
             } else {
-                // MENU 3 (GUARDAR PARTIDA)-----------------------------------------------------
+                // MENU 3 (GUARDAR PARTIDA)-------------------------------------
                 opcion = menu3();
 
                 if (opcion == 1) {
-                    // GUARDAR PARTIDA -------------------------------------------------------------
+                    // GUARDAR PARTIDA -----------------------------------------
                     System.out.println("La funcion está en mantenimiento");
                 }
 
                 System.out.println("Gracias por jugar");
                 salidaJuego = true;
             }
-
         } while (!salidaJuego);
-
     }
 
     public static int menu() {
@@ -99,6 +128,37 @@ public class Main {
                 while (opcion < 1 || opcion > 3) {
                     System.out.println("El dato tiene que ser 1, 2 o 3");
                     System.out.print(menu);
+                    opcion = sc.nextInt();
+                }
+                break;
+            } catch (InputMismatchException ime) {
+                System.out.println("El dato tiene que ser numerico");
+                sc.nextLine();
+            }
+        } while (true);
+        return opcion;
+    }
+
+    public static int menu1_5() {
+        Scanner sc = new Scanner(System.in);
+        String menu2 = """
+                       -------------------------------------------------
+                       |               Juego de la vida                |
+                       |               Elija la opcion:                |
+                       |                                               |  
+                       |            1.- Iniciar por porcentaje         |
+                       |            2.- Iniciar por posiciones         |
+                       |                                               |
+                       -------------------------------------------------
+                       Respuesta: """;
+        int opcion;
+        do {
+            try {
+                System.out.print(menu2);
+                opcion = sc.nextInt();
+                while (opcion < 1 || opcion > 2) {
+                    System.out.println("El dato tiene que ser 1 o 2");
+                    System.out.print(menu2);
                     opcion = sc.nextInt();
                 }
                 break;
@@ -214,5 +274,15 @@ public class Main {
             }
         } while (true);
         return porcentaje;
+    }
+
+    public static boolean condicionDerrota(List<Juego> historico) {
+        Juego primero = historico.get(0);
+        for (int i = 0; i < historico.size(); i++) {
+            if (!primero.equals(historico.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

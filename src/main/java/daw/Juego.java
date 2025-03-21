@@ -1,5 +1,6 @@
 package daw;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -35,13 +36,17 @@ public class Juego {
             }
         }
     }
-
-    public void matarCelula(int fila, int columna) {
-        tablero[fila][columna].muerte();
-    }
-
-    public void revivirCelula(int fila, int columna) {
-        tablero[fila][columna].vida();
+    
+    public int comprobarVivas(){
+        int resultado = 0;
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[0].length; j++) {
+                if (tablero[i][j].isViva()) {
+                    resultado++;
+                }
+            }
+        }
+        return resultado;
     }
 
     public Juego recorrerTablero() {
@@ -106,6 +111,28 @@ public class Juego {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Juego other = (Juego) obj;
+        return Arrays.deepEquals(this.tablero, other.tablero);
     }
 
 }
