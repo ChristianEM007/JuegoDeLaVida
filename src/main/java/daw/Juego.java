@@ -20,8 +20,8 @@ public class Juego {
             }
         }
     }
-    
-    public Juego(Celula[][] tableroNuevo){
+
+    public Juego(Celula[][] tableroNuevo) {
         this.tablero = tableroNuevo;
     }
 
@@ -36,8 +36,17 @@ public class Juego {
             }
         }
     }
-    
-    public int comprobarVivas(){
+
+    public void inicioPartidaPosiciones(String[] posiciones) {
+        for (String pos : posiciones) {
+            String[] numeros = pos.split("-");
+            if (casillaValida(Integer.parseInt(numeros[0]), Integer.parseInt(numeros[1]))) {
+                tablero[Integer.parseInt(numeros[0])][Integer.parseInt(numeros[1])].vida();
+            }
+        }
+    }
+
+    public int comprobarVivas() {
         int resultado = 0;
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[0].length; j++) {
@@ -54,9 +63,9 @@ public class Juego {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[0].length; j++) {
                 if (tablero[i][j].isViva()) {
-                    resultado[i][j] = (mementoMori(i, j))? new Celula(false) : new Celula(true);
+                    resultado[i][j] = (mementoMori(i, j)) ? new Celula(false) : new Celula(true);
                 } else {
-                    resultado[i][j] = (comprobarRevivicion(i, j))? new Celula(true) : new Celula(false);
+                    resultado[i][j] = (comprobarRevivicion(i, j)) ? new Celula(true) : new Celula(false);
                 }
             }
         }
@@ -78,9 +87,9 @@ public class Juego {
         }
         return cantidad;
     }
-    
-    public boolean casillaValida(int fila, int columna){
-        return (0<=fila&&fila<tablero.length)&&(0<=columna&&columna<tablero.length);
+
+    public boolean casillaValida(int fila, int columna) {
+        return (0 <= fila && fila < tablero.length) && (0 <= columna && columna < tablero.length);
     }
 
     public boolean comprobarRevivicion(int fila, int columna) {

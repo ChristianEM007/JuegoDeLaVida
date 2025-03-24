@@ -27,9 +27,8 @@ public class Main {
                 // INICIALIZAMOS EL TABLERO
                 generacionAct = new Juego(tamaño);
 
-                //opcion = menu1_5(); *******************************************Falta preguntar al usuario por coordenadas concretas de las celulas, espabila christian
-                /*
-                if(opcion==1){
+                opcion = menu1_5();
+                if (opcion == 1) {
                     // PORCENTAJE DE CELULAS VIVAS 
                     int porcentaje = pregPorcentaje();
                     int numVivas = (tamaño * tamaño * porcentaje) / 100;
@@ -37,16 +36,13 @@ public class Main {
                     // INICIALIZAR LAS CELULAS VIVAS
                     generacionAct.inicioPartida(numVivas);
                 } else {
-                    String[] posiciones = pregPosiciones();
+                    // POSICIONES DE CELULAS VIVAS
+                    String pos = pregPosiciones();
+                    String[] posiciones = pos.split(",");
+
+                    // INICIALIZAR LAS CELULAS VIVAS
                     generacionAct.inicioPartidaPosiciones(posiciones);
                 }
-                */
-                // PORCENTAJE DE CELULAS VIVAS 
-                int porcentaje = pregPorcentaje();
-                int numVivas = (tamaño * tamaño * porcentaje) / 100;
-
-                // INICIALIZAR LAS CELULAS VIVAS
-                generacionAct.inicioPartida(numVivas);
             }
             case 2 -> {
                 // CARGAR PARTIDA ----------------------------------------------
@@ -270,6 +266,28 @@ public class Main {
                 break;
             } catch (InputMismatchException ime) {
                 System.out.println("El dato tiene que ser numerico");
+                sc.nextLine();
+            }
+        } while (true);
+        return porcentaje;
+    }
+
+    public static String pregPosiciones() {
+        Scanner sc = new Scanner(System.in);
+        String porcentaje;
+        String pregunta = "Ahora elija las posiciones de las celulas vivas(0-0,0-1,0-2...): ";
+        do {
+            try {
+                System.out.print(pregunta);
+                porcentaje = sc.nextLine();
+                while (porcentaje.matches(".\\D*[^,]")) {
+                    System.out.println("El dato solo tiene que tener numeros, la coma y el guion");
+                    System.out.print(pregunta);
+                    porcentaje = sc.nextLine();
+                }
+                break;
+            } catch (InputMismatchException ime) {
+                System.out.println("El dato solo tiene que tener numeros, la coma y el guion");
                 sc.nextLine();
             }
         } while (true);
