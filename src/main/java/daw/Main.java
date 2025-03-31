@@ -41,7 +41,7 @@ public class Main {
                 if (opcion == 1) {
                     // PORCENTAJE DE CELULAS VIVAS 
                     int porcentaje = pregPorcentaje();
-                    int numVivas = (tamaño * tamaño * porcentaje) / 100;
+                    int numVivas = ((tamaño * tamaño) * porcentaje) / 100;
 
                     // INICIALIZAR LAS CELULAS VIVAS
                     generacionAct.inicioPartida(numVivas);
@@ -99,7 +99,7 @@ public class Main {
             if (opcion == 1) {
                 // SIGUIENTE GENERACION ----------------------------------------
                 Juego generacionNueva = generacionAct.recorrerTablero();
-                System.out.println("Generación anterior ------------------------");
+                System.out.println("Generación anterior ----------------------");
                 System.out.print(generacionAct.toString());
                 System.out.println("Numero de células vivas: " + generacionAct.comprobarVivas());
                 numeroGen++;
@@ -329,7 +329,7 @@ public class Main {
             try {
                 System.out.print(pregunta);
                 porcentaje = sc.nextLine();
-                while (porcentaje.matches(".\\D*[^,]")) {
+                while (porcentaje.matches(".\\D*[^0-9,-]")) {
                     System.out.println("El dato solo tiene que tener numeros, la coma y el guion");
                     System.out.print(pregunta);
                     porcentaje = sc.nextLine();
