@@ -1,8 +1,12 @@
 package daw;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -11,11 +15,17 @@ import java.util.Scanner;
  */
 public class Main {
 
+    public static final String MAP_KEY_TAMANIO = "Tamaños";
+    public static final String MAP_KEY_NUM_GEN = "NumeroGeneracion";
+    public static final String MAP_KEY_FILAS = "Filas";
+
     public static void main(String[] args) {
         // MENU PRINCIPAL ------------------------------------------------------
         int opcion = menu();
 
         Juego generacionAct = new Juego(0);
+        boolean partidaCargada = false;
+        Map<String, String> datosPartida = new HashMap<>();
 
         switch (opcion) {
             // NUEVA PARTIDA ---------------------------------------------------
@@ -46,8 +56,18 @@ public class Main {
             }
             case 2 -> {
                 // CARGAR PARTIDA ----------------------------------------------
-                System.out.println("Estamos en mantenimiento vuelva en un siglo");
-                System.exit(0); // Esto es temporal mientras no se completa
+                System.out.println("Cargando...");
+
+                partidaCargada = true;
+                String nombreFichero = "partidaCelulas.txt";
+                datosPartida = cargarPartida(nombreFichero);
+
+                // INICIALIZAMOS EL TABLERO
+                String[] tamanio = datosPartida.get(MAP_KEY_TAMANIO).split(" ");
+                generacionAct = new Juego(Integer.parseInt(tamanio[0]));
+
+                // INICIALIZAR LAS CELULAS VIVAS
+                generacionAct.inicioCargarPartida(datosPartida.get(MAP_KEY_FILAS));
             }
             case 3 -> {
                 // SALIR DEL JUEGO ---------------------------------------------
@@ -60,11 +80,18 @@ public class Main {
         }
 
         // LOOP JUGABLE --------------------------------------------------------
-        System.out.println("La primera generacion es: ");
+        int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
+
+        String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
+        System.out.println(mensaje);
         System.out.println(generacionAct.toString());
-        boolean salidaJuego = false;
+
         List<Juego> historico = new ArrayList<>();
         historico.add(generacionAct);
+        List<Integer> numeroCelVivasGen = new ArrayList<>();
+        numeroCelVivasGen.add(generacionAct.comprobarVivas());
+
+        boolean salidaJuego = false;
         do {
             // MENU 2 ----------------------------------------------------------
             opcion = menu2();
@@ -75,9 +102,11 @@ public class Main {
                 System.out.println("Generación anterior ------------------------");
                 System.out.print(generacionAct.toString());
                 System.out.println("Numero de células vivas: " + generacionAct.comprobarVivas());
-                System.out.println("Generación actual ------------------------");
+                numeroGen++;
+                System.out.println("Generación actual ------------------------ Nº: " + numeroGen);
                 System.out.print(generacionNueva.toString());
                 System.out.println("Numero de células vivas: " + generacionNueva.comprobarVivas());
+                numeroCelVivasGen.add(generacionNueva.comprobarVivas());
 
                 // COMPROBAMOS LA CONDICION DE DERROTA -------------------------
                 historico.add(generacionNueva);
@@ -95,13 +124,33 @@ public class Main {
 
                 if (opcion == 1) {
                     // GUARDAR PARTIDA -----------------------------------------
-                    System.out.println("La funcion está en mantenimiento");
+                    generacionAct.guardarPartida(generacionAct.getTamanio(), numeroGen, numeroCelVivasGen);
                 }
 
                 System.out.println("Gracias por jugar");
                 salidaJuego = true;
             }
         } while (!salidaJuego);
+    }
+
+    public static Map<String, String> cargarPartida(String idFichero) {
+        Map<String, String> datos = new HashMap<>();
+        String linea;
+        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+            linea = datosFichero.nextLine();
+            datos.put("Tamaños", linea);
+            linea = datosFichero.nextLine();
+            datos.put("NumeroGeneracion", linea);
+            StringBuilder filas = new StringBuilder();
+            do {
+                linea = datosFichero.nextLine();
+                filas.append(linea);
+            } while (!linea.contains(";"));
+            datos.put("Filas", filas.toString());
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return datos;
     }
 
     public static int menu() {

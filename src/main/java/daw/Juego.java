@@ -1,6 +1,10 @@
 package daw;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,6 +29,10 @@ public class Juego {
         this.tablero = tableroNuevo;
     }
 
+    public int getTamanio() {
+        return tablero.length;
+    }
+
     public void inicioPartida(int numVivas) {
         Random rand = new Random();
         while (numVivas > 0) {
@@ -42,6 +50,24 @@ public class Juego {
             String[] numeros = pos.split("-");
             if (casillaValida(Integer.parseInt(numeros[0]), Integer.parseInt(numeros[1]))) {
                 tablero[Integer.parseInt(numeros[0])][Integer.parseInt(numeros[1])].vida();
+            }
+        }
+    }
+
+    public void inicioCargarPartida(String filas) {
+        filas = filas.replace(";", "");
+        String[] vivas = filas.split(" ");
+
+        int fila = 0;
+        int columna = 0;
+        for (String viva : vivas) {
+            if (viva.equals("1")) {
+                tablero[fila][columna].vida();
+            }
+            columna++;
+            if (columna == tablero.length) {
+                columna = 0;
+                fila++;
             }
         }
     }
@@ -107,6 +133,38 @@ public class Juego {
             return morir;
         }
         return false;
+    }
+
+    public void guardarPartida(int tamanio, int numeroGen, List<Integer> numeroCelVivasGen) {
+        String idFichero = "partidaCelulas.txt";
+        String tmp;
+        try (BufferedWriter flujo = new BufferedWriter(new FileWriter(idFichero))) {
+            flujo.write(String.valueOf(tamanio) + " " + String.valueOf(tamanio));
+            flujo.newLine();
+            flujo.write(String.valueOf(numeroGen));
+            flujo.newLine();
+            for (int i = 0; i < tablero.length; i++) {
+                for (int j = 0; j < tablero[i].length; j++) {
+                    tmp = (tablero[i][j].isViva()) ? "1" : "0";
+                    flujo.write(tmp + " ");
+                }
+                if (i == tablero[i].length - 1) {
+                    flujo.write(";");
+                }
+                flujo.newLine();
+            }
+            for (int i = 0; i < numeroCelVivasGen.size(); i++) {
+                if (i != numeroCelVivasGen.size() - 1) {
+                    flujo.write(String.valueOf(numeroCelVivasGen.get(i)) + " ");
+                } else {
+                    flujo.write(String.valueOf(numeroCelVivasGen.get(i)));
+                }
+            }
+            flujo.flush();
+            System.out.println("Partida guardada correctamente.");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
