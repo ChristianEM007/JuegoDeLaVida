@@ -124,15 +124,8 @@ public class Juego {
     }
 
     public boolean mementoMori(int fila, int columna) {
-        boolean morir = true;
         int vecinas = comprobarVecinas(fila, columna);
-
-        if (vecinas <= 1) {
-            return morir;
-        } else if (vecinas > 3) {
-            return morir;
-        }
-        return false;
+        return vecinas <= 1 || vecinas > 3;
     }
 
     public void guardarPartida(int tamanio, int numeroGen, List<Integer> numeroCelVivasGen) {

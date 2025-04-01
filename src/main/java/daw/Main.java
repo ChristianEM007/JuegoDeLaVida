@@ -81,7 +81,6 @@ public class Main {
 
         // LOOP JUGABLE --------------------------------------------------------
         int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
-
         String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
         System.out.println(mensaje);
         System.out.println(generacionAct.toString());
@@ -138,15 +137,15 @@ public class Main {
         String linea;
         try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             linea = datosFichero.nextLine();
-            datos.put("Tamaños", linea);
+            datos.put(MAP_KEY_TAMANIO, linea);
             linea = datosFichero.nextLine();
-            datos.put("NumeroGeneracion", linea);
+            datos.put(MAP_KEY_NUM_GEN, linea);
             StringBuilder filas = new StringBuilder();
             do {
                 linea = datosFichero.nextLine();
                 filas.append(linea);
             } while (!linea.contains(";"));
-            datos.put("Filas", filas.toString());
+            datos.put(MAP_KEY_FILAS, filas.toString());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
