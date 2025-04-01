@@ -53,7 +53,7 @@ public class Juego {
             }
         }
     }
-
+    
     public void inicioCargarPartida(String filas) {
         filas = filas.replace(";", "");
         String[] vivas = filas.split(" ");

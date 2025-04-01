@@ -80,11 +80,11 @@ public class Main {
         }
 
         // LOOP JUGABLE --------------------------------------------------------
-        int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
-        String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
-        System.out.println(mensaje);
-        System.out.println(generacionAct.toString());
-
+            int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
+            String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
+            System.out.println(mensaje);
+            System.out.println(generacionAct.toString());
+        
         List<Juego> historico = new ArrayList<>();
         historico.add(generacionAct);
         List<Integer> numeroCelVivasGen = new ArrayList<>();
@@ -146,8 +146,9 @@ public class Main {
                 filas.append(linea);
             } while (!linea.contains(";"));
             datos.put(MAP_KEY_FILAS, filas.toString());
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());
+            System.exit(0);
         }
         return datos;
     }
