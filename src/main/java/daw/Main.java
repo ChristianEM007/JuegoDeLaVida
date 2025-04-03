@@ -63,8 +63,7 @@ public class Main {
                 datosPartida = cargarPartida(nombreFichero);
 
                 // INICIALIZAMOS EL TABLERO
-                String[] tamanio = datosPartida.get(MAP_KEY_TAMANIO).split(" ");
-                generacionAct = new Juego(Integer.parseInt(tamanio[0]));
+                generacionAct = new Juego(Integer.parseInt(datosPartida.get(MAP_KEY_TAMANIO)));
 
                 // INICIALIZAR LAS CELULAS VIVAS
                 generacionAct.inicioCargarPartida(datosPartida.get(MAP_KEY_FILAS));
@@ -73,19 +72,19 @@ public class Main {
                 // BORRAR PARTIDA ----------------------------------------------
                 System.out.println("Borrando...");
                 File archivo = new File("partidaCelulas.txt");
-                
-                if(archivo.exists()){
+
+                if (archivo.exists()) {
                     archivo.delete();
                     System.out.println("Eliminada exitosamente");
-                    
-                }else{
+
+                } else {
                     System.out.println("No tenias ninguna partida guardada :D");
                 }
-                
+
                 System.exit(0);
-                
+
             }
-            case 4 ->{
+            case 4 -> {
                 // SALIR DEL JUEGO ---------------------------------------------
                 System.out.println("Saliendo.......");
                 System.exit(0); // Termina programa
@@ -96,11 +95,11 @@ public class Main {
         }
 
         // LOOP JUGABLE --------------------------------------------------------
-            int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
-            String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
-            System.out.println(mensaje);
-            System.out.println(generacionAct.toString());
-        
+        int numeroGen = (partidaCargada) ? Integer.parseInt(datosPartida.get(MAP_KEY_NUM_GEN)) : 1;
+        String mensaje = (partidaCargada) ? "La generacion cargada es: " : "La primera generacion es: ";
+        System.out.println(mensaje);
+        System.out.println(generacionAct.toString());
+
         List<Juego> historico = new ArrayList<>();
         historico.add(generacionAct);
         List<Integer> numeroCelVivasGen = new ArrayList<>();
@@ -157,10 +156,10 @@ public class Main {
             linea = datosFichero.nextLine();
             datos.put(MAP_KEY_NUM_GEN, linea);
             StringBuilder filas = new StringBuilder();
-            do {
+            for (int i = 0; i < Integer.parseInt(datos.get(MAP_KEY_TAMANIO)); i++) {
                 linea = datosFichero.nextLine();
-                filas.append(linea);
-            } while (!linea.contains(";"));
+                filas.append(linea).append(" ");
+            }
             datos.put(MAP_KEY_FILAS, filas.toString());
         } catch (FileNotFoundException | NullPointerException e) {
             System.out.println(e.getMessage());

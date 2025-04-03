@@ -53,9 +53,8 @@ public class Juego {
             }
         }
     }
-    
+
     public void inicioCargarPartida(String filas) {
-        filas = filas.replace(";", "");
         String[] vivas = filas.split(" ");
 
         int fila = 0;
@@ -132,17 +131,18 @@ public class Juego {
         String idFichero = "partidaCelulas.txt";
         String tmp;
         try (BufferedWriter flujo = new BufferedWriter(new FileWriter(idFichero))) {
-            flujo.write(String.valueOf(tamanio) + " " + String.valueOf(tamanio));
+            flujo.write(String.valueOf(tamanio));
             flujo.newLine();
             flujo.write(String.valueOf(numeroGen));
             flujo.newLine();
             for (int i = 0; i < tablero.length; i++) {
                 for (int j = 0; j < tablero[i].length; j++) {
                     tmp = (tablero[i][j].isViva()) ? "1" : "0";
-                    flujo.write(tmp + " ");
-                }
-                if (i == tablero[i].length - 1) {
-                    flujo.write(";");
+                    if (j == tablero[i].length - 1) {
+                        flujo.write(tmp);
+                    } else {
+                        flujo.write(tmp + " ");
+                    }
                 }
                 flujo.newLine();
             }
