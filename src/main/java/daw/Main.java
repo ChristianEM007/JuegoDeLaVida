@@ -70,6 +70,22 @@ public class Main {
                 generacionAct.inicioCargarPartida(datosPartida.get(MAP_KEY_FILAS));
             }
             case 3 -> {
+                // BORRAR PARTIDA ----------------------------------------------
+                System.out.println("Borrando...");
+                File archivo = new File("/home/christian/NetBeansProjects/JuegoDeLaVida/partidaCelulas.txt");
+                
+                if(archivo.exists()){
+                    archivo.delete();
+                    System.out.println("Eliminada exitosamente");
+                    
+                }else{
+                    System.out.println("No tenias ninguna partida guardada :D");
+                }
+                
+                System.exit(0);
+                
+            }
+            case 4 ->{
                 // SALIR DEL JUEGO ---------------------------------------------
                 System.out.println("Saliendo.......");
                 System.exit(0); // Termina programa
@@ -162,7 +178,8 @@ public class Main {
                        |                                               |  
                        |            1.- Partida nueva                  |
                        |            2.- Cargar partida                 |
-                       |            3.- Salir                          |
+                       |            3.- Borrar partida                 |
+                       |            4.- Salir                          |
                        -------------------------------------------------
                        Respuesta: """;
         int opcion;
