@@ -72,7 +72,7 @@ public class Main {
             case 3 -> {
                 // BORRAR PARTIDA ----------------------------------------------
                 System.out.println("Borrando...");
-                File archivo = new File("/home/christian/NetBeansProjects/JuegoDeLaVida/partidaCelulas.txt");
+                File archivo = new File("partidaCelulas.txt");
                 
                 if(archivo.exists()){
                     archivo.delete();
@@ -187,8 +187,8 @@ public class Main {
             try {
                 System.out.print(menu);
                 opcion = sc.nextInt();
-                while (opcion < 1 || opcion > 3) {
-                    System.out.println("El dato tiene que ser 1, 2 o 3");
+                while (opcion < 1 || opcion > 4) {
+                    System.out.println("El dato tiene que ser 1, 2, 3 o 4");
                     System.out.print(menu);
                     opcion = sc.nextInt();
                 }
